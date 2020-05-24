@@ -10,6 +10,6 @@ import pl.sdacademy.wiosnademo.domain.User;
 
 public interface UserRepository extends JpaRepository<User, String> {
 
-  @Query("SELECT u FROM users u left join u.roles WHERE u.username = :username")
+  @Query("SELECT u FROM users u left join fetch u.roles WHERE u.username = :username")
   Optional<User> findUserByUsernameWithRoles(@Param("username") final String username);
 }

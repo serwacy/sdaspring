@@ -2,6 +2,7 @@ package pl.sdacademy.wiosnademo.services;
 
 import java.util.List;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,10 +19,12 @@ public class UserService {
 
   private final UserRepository userRepository;
   private final RoleRepository roleRepository;
+  private final PasswordEncoder passwordEncoder;
 
-  public UserService(final UserRepository userRepository, final RoleRepository roleRepository) {
+  public UserService(final UserRepository userRepository, final RoleRepository roleRepository, final PasswordEncoder passwordEncoder) {
     this.userRepository = userRepository;
     this.roleRepository = roleRepository;
+    this.passwordEncoder = passwordEncoder;
   }
 
   public List<User> getAllUsers() {
@@ -34,7 +37,8 @@ public class UserService {
 
   public void createUser(final UserForm userForm) {
     // improvement -> stworzyć mapper, jako osobny, dodać builder zamiast konstruktora
-    final User user = new User(userForm.getUsername(), userForm.getEmail(), userForm.getPassword(), Status.ACTIVE, List.of());
+    final User user = new User(userForm.getUsername(), userForm.getEmail(),
+            passwordEncoder.encode(userForm.getPassword()), Status.ACTIVE, List.of());
     userRepository.save(user);
   }
 
@@ -53,7 +57,7 @@ public class UserService {
     }
     final User user = getByUsername(username);
     user.setEmail(userForm.getEmail());
-    user.setPassword(userForm.getPassword());
+    user.setPassword(passwordEncoder.encode(userForm.getPassword()));
     userRepository.save(user);
   }
 
