@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+  <div th:fragment="navigation">
+    <nav>
+      <ul class="nav-list">
+        <li>
+          <a class="nav-link" th:href="@{/users}">Show</a>
+        </li>
+        <li>
+          <a class="nav-link" th:href="@{/users/create}">Create</a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</html>
