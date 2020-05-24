@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Edit User</title>
+  <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+<div th:replace="navigation :: navigation"></div>
+<div class="user-create-form-container">
+  <form class="user-form" method="post" th:action="@{/users/edit/__${userForm.username}__}" th:object="${userForm}">
+    <p class="user-form-elem">Create user with following data:</p>
+    <label class="user-form-elem">
+      Username
+      <input type="text" th:field="*{username}" readonly>
+    </label>
+
+    <label class="user-form-elem">
+      Email
+      <input type="email" th:field="*{email}">
+      <div class="error-msg" th:if="${#fields.hasErrors('email')}">
+        <p th:text="${#fields.errors('email')}"></p>
+      </div>
+    </label>
+
+    <label class="user-form-elem">
+      Password
+      <input type="password" th:field="*{password}">
+      <div class="error-msg" th:if="${#fields.hasErrors('passwordsMatch')}">
+        <p th:text="${#fields.errors('passwordsMatch')}"></p>
+      </div>
+    </label>
+
+    <label class="user-form-elem">
+      Confirm Password
+      <input type="password" th:field="*{confirmPassword}">
+    </label>
+
+    <button class="user-form-elem" type="submit">
+      Create ME!
+    </button>
+
+  </form>
+</div>
+
+</body>
+</html>

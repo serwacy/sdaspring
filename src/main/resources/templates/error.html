@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Ooooooops...</title>
+  <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+  <div th:replace="navigation :: navigation" ></div>
+  <p> Oops, something went wrong</p>
+  <p th:if="${msg}" th:text="${msg}"></p>
+</body>
+</html>

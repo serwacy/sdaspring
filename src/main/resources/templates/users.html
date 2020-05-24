@@ -11,6 +11,10 @@
       <div class="user" th:each="user : ${users}">
         <p th:text="${user.username}"></p>
         <p th:text="${user.email}"></p>
+        <a th:href="@{/users/edit/__${user.username}__}">Edit</a>
+        <form method="post" th:action="@{/users/delete/__${user.username}__}">
+          <button>DELETE ME!</button>
+        </form>
       </div>
     </section>
   </body>

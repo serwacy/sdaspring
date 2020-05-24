@@ -13,16 +13,25 @@
       <label class="user-form-elem">
         Username
         <input type="text" th:field="*{username}">
+        <div class="error-msg" th:if="${#fields.hasErrors('username')}">
+          <p th:text="${#fields.errors('username')}"></p>
+        </div>
       </label>
 
       <label class="user-form-elem">
         Email
         <input type="email" th:field="*{email}">
+        <div class="error-msg" th:if="${#fields.hasErrors('email')}">
+          <p th:text="${#fields.errors('email')}"></p>
+        </div>
       </label>
 
       <label class="user-form-elem">
         Password
         <input type="password" th:field="*{password}">
+        <div class="error-msg" th:if="${#fields.hasErrors('passwordsMatch')}">
+          <p th:text="${#fields.errors('passwordsMatch')}"></p>
+        </div>
       </label>
 
       <label class="user-form-elem">
