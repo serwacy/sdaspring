@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Edit Roles</title>
+  <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+  <div th:replace="navigation :: navigation"></div>
+  <div th:each="role : ${user.roles}">
+    <p th:text="'Role granted ' + ${role.name}"></p>
+  </div>
+
+  <div th:each="role : ${roles}">
+    <a th:href="@{/users/__${user.username}__/roles/__${role.name}__}" th:text="'Add role ' + ${role.name}"></a>
+  </div>
+
+</body>
+</html>

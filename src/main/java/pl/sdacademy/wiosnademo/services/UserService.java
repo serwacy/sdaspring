@@ -5,9 +5,11 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import pl.sdacademy.wiosnademo.domain.Role;
 import pl.sdacademy.wiosnademo.domain.Status;
 import pl.sdacademy.wiosnademo.domain.User;
 import pl.sdacademy.wiosnademo.model.UserForm;
+import pl.sdacademy.wiosnademo.repositories.RoleRepository;
 import pl.sdacademy.wiosnademo.repositories.UserRepository;
 
 @Service
@@ -15,9 +17,11 @@ import pl.sdacademy.wiosnademo.repositories.UserRepository;
 public class UserService {
 
   private final UserRepository userRepository;
+  private final RoleRepository roleRepository;
 
-  public UserService(final UserRepository userRepository) {
+  public UserService(final UserRepository userRepository, final RoleRepository roleRepository) {
     this.userRepository = userRepository;
+    this.roleRepository = roleRepository;
   }
 
   public List<User> getAllUsers() {
@@ -50,6 +54,20 @@ public class UserService {
     final User user = getByUsername(username);
     user.setEmail(userForm.getEmail());
     user.setPassword(userForm.getPassword());
+    userRepository.save(user);
+  }
+
+  public User getUserWithRoles(final String username) {
+    return userRepository.findUserByUsernameWithRoles(username).orElseThrow();
+  }
+
+  public void addRoleToUser(final String username, final String rolename) {
+    final User user = getUserWithRoles(username);
+    final Role role = roleRepository.findById(rolename).orElseThrow();
+    if (user.getRoles().contains(role)) {
+      throw new RuntimeException("ROle already assigned to user");
+    }
+    user.getRoles().add(role);
     userRepository.save(user);
   }
 }

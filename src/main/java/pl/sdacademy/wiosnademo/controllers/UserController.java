@@ -1,5 +1,6 @@
 package pl.sdacademy.wiosnademo.controllers;
 
+import javax.annotation.security.PermitAll;
 import javax.validation.Valid;
 
 import org.springframework.stereotype.Controller;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import pl.sdacademy.wiosnademo.domain.User;
 import pl.sdacademy.wiosnademo.model.UserForm;
+import pl.sdacademy.wiosnademo.services.RoleService;
 import pl.sdacademy.wiosnademo.services.UserService;
 
 @Controller
@@ -22,9 +24,11 @@ import pl.sdacademy.wiosnademo.services.UserService;
 public class UserController {
 
   private final UserService userService;
+  private final RoleService roleService;
 
-  public UserController(final UserService userService) {
+  public UserController(final UserService userService, final RoleService roleService) {
     this.userService = userService;
+    this.roleService = roleService;
   }
 
   @GetMapping
@@ -74,6 +78,20 @@ public class UserController {
       return "users-edit";
     }
     return "redirect:/users";
+  }
+
+  @GetMapping("/{username}/roles")
+  public String showUserRolesPage(@PathVariable final String username, final ModelMap modelMap) {
+    final User user = userService.getUserWithRoles(username);
+    modelMap.addAttribute("user", user);
+    modelMap.addAttribute("roles", roleService.findRolesUnassignedToUser(user));
+    return "user-roles";
+  }
+
+  @GetMapping("/{username}/roles/{rolename}")
+  public String handleRoleAdd(@PathVariable final String username, @PathVariable final String rolename) {
+    userService.addRoleToUser(username, rolename);
+    return "redirect:/users/" + username + "/roles";
   }
 
   @ExceptionHandler(RuntimeException.class)
