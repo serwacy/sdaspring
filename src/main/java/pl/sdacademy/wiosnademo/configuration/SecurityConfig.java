@@ -27,12 +27,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
               .and()
               .logout();
    }
-
-   @Bean
-   public PasswordEncoder passwordEncoder(){
-      return new BCryptPasswordEncoder();
-   }
-
+   
    @Override
    public UserDetailsService userDetailsServiceBean() throws Exception{
       return userDetailsService;
